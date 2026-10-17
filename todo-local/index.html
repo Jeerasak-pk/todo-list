@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'">
+<title>งานของฉัน</title>
+<meta name="theme-color" content="#4f46e5">
+<meta name="color-scheme" content="light dark">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
+</head>
+<body>
+<a class="skip" href="#list">ข้ามไปที่รายการงาน</a>
+<header class="top">
+  <h1>✅ งานของฉัน</h1>
+  <div class="acts">
+    <button id="bell" class="ic" aria-label="เปิดการแจ้งเตือน" title="เปิดการแจ้งเตือน">🔔</button>
+    <button id="theme" class="ic" aria-label="สลับธีมสว่าง/มืด" title="สลับธีม">🌙</button>
+    <button id="helpBtn" class="ic" aria-label="วิธีใช้และสำรองข้อมูล" title="วิธีใช้และสำรองข้อมูล">?</button>
+  </div>
+</header>
+<main>
+  <div id="envnote" class="note" hidden></div>
+  <section class="card" aria-labelledby="ph">
+    <h2 id="ph">ความคืบหน้าวันนี้</h2>
+    <p id="ptext" class="big"></p>
+    <progress id="pbar" max="100" value="0" aria-labelledby="ph"></progress>
+    <p id="pstat" class="muted"></p>
+  </section>
+
+  <form id="quick" class="quick">
+    <label class="sr" for="qt">เพิ่มงานด่วน</label>
+    <input id="qt" placeholder="พิมพ์งานใหม่ แล้วกด Enter…" maxlength="200" autocomplete="off">
+    <button class="btn pri">เพิ่ม</button>
+    <button type="button" id="addFull" class="btn">ละเอียด…</button>
+  </form>
+
+  <div class="tools">
+    <label class="sr" for="q">ค้นหา</label>
+    <input id="q" type="search" placeholder="🔍 ค้นหาชื่อ บันทึก โปรเจกต์" autocomplete="off">
+    <label class="sr" for="sort">เรียงตาม</label>
+    <select id="sort">
+      <option value="due">เรียง: วันกำหนด</option>
+      <option value="pri">เรียง: ความสำคัญ</option>
+      <option value="new">เรียง: ล่าสุด</option>
+      <option value="title">เรียง: ชื่อ ก-ฮ</option>
+    </select>
+    <label class="sr" for="proj">โปรเจกต์</label>
+    <select id="proj"></select>
+  </div>
+  <div id="chips" class="chips" role="group" aria-label="ตัวกรองงาน"></div>
+  <ul id="list" class="list"></ul>
+  <p id="empty" class="muted center" hidden>ไม่พบงานในมุมมองนี้</p>
+</main>
+
+<dialog id="dlg" aria-labelledby="dt">
+  <form id="form" class="form">
+    <h2 id="dt">งาน</h2>
+    <label>ชื่องาน *<input name="title" required maxlength="200"></label>
+    <div class="row">
+      <label>วันกำหนด<input type="date" name="due"></label>
+      <label>เวลาแจ้งเตือน<input type="time" name="time"></label>
+    </div>
+    <div class="row">
+      <label>ความสำคัญ<select name="priority"><option value="1">สูง</option><option value="2" selected>ปานกลาง</option><option value="3">ต่ำ</option></select></label>
+      <label>ทำซ้ำ<select name="repeat"><option value="none">ไม่ซ้ำ</option><option value="daily">ทุกวัน</option><option value="weekly">ทุกสัปดาห์</option><option value="monthly">ทุกเดือน</option></select></label>
+    </div>
+    <label>หมวดหมู่ / โปรเจกต์<input name="project" list="plist" maxlength="50"></label>
+    <datalist id="plist"></datalist>
+    <label>บันทึกเพิ่มเติม<textarea name="notes" rows="3" maxlength="2000"></textarea></label>
+    <p class="muted">งานที่ทำซ้ำต้องมีวันกำหนด (ถ้าเว้นว่างจะใช้วันนี้) · การแจ้งเตือนต้องกำหนดเวลาด้วย</p>
+    <div class="row end">
+      <button type="button" class="btn" id="cancel">ยกเลิก</button>
+      <button class="btn pri">บันทึก</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="help" aria-labelledby="ht">
+  <div class="form">
+    <h2 id="ht">วิธีใช้ และข้อมูลสำรอง</h2>
+    <p id="envinfo" class="note"></p>
+    <h3>ข้อมูลเก็บไว้ที่ไหน</h3>
+    <p>เก็บใน <b>localStorage</b> ของเบราว์เซอร์บนเครื่องนี้เท่านั้น ไม่มีการส่งข้อมูลไปเซิร์ฟเวอร์ ไม่มีระบบล็อกอินหรือรหัสผ่าน ใครใช้เบราว์เซอร์/โปรไฟล์เดียวกันก็เห็นข้อมูลได้</p>
+    <h3>ข้อจำกัด</h3>
+    <ul>
+      <li>ล้างข้อมูลเว็บไซต์ / โหมดส่วนตัว / ถอนการติดตั้ง อาจทำให้ข้อมูลหาย → สำรองไฟล์เป็นระยะ</li>
+      <li>เปิดจาก <code>file://</code> กับ <code>localhost</code> (หรือ HTTPS) เป็นคนละพื้นที่เก็บข้อมูล ข้อมูลไม่ข้ามกัน ให้ส่งออกแล้วนำเข้า</li>
+      <li>แจ้งเตือนทำงานเมื่อ <b>เปิดแอปหรือแท็บค้างไว้</b> เท่านั้น (ไม่มีเซิร์ฟเวอร์ push) และต้องอนุญาตการแจ้งเตือนก่อน หากไม่ได้อนุญาต จะแสดงเป็นข้อความในแอปแทน</li>
+      <li>ไม่ซิงก์ข้ามอุปกรณ์</li>
+    </ul>
+    <h3>สำรอง / กู้คืน</h3>
+    <div class="row">
+      <button class="btn pri" id="exp">⬇ ส่งออกไฟล์สำรอง</button>
+      <button class="btn" id="impBtn">⬆ นำเข้าไฟล์สำรอง</button>
+      <input type="file" id="imp" accept="application/json,.json" hidden>
+    </div>
+    <p class="muted">การนำเข้าจะ<b>แทนที่</b>ข้อมูลเดิมทั้งหมด โดยจะถามยืนยันก่อน และเก็บสำเนาข้อมูลเดิมไว้ 1 ชุดในเครื่อง</p>
+    <div class="row end"><button class="btn" id="hclose">ปิด</button></div>
+  </div>
+</dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="js/app.js"></script>
+</body>
+</html>
